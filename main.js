@@ -104,10 +104,15 @@ function addItem(e)
     li.className = 'list-group-item';
     li.appendChild(document.createTextNode(newItem));
     //create button
+    var editBtn = document.createElement('button')
+editBtn.className = 'btn btn-danger btn-sm float-right';
+editBtn.appendChild(document.createTextNode('Edit'));
+li.appendChild(editBtn)
 var delButton = document.createElement('button');
 delButton.className = 'btn btn-danger btn-sm float-right delete';
 delButton.appendChild(document.createTextNode('X'));
 li.appendChild(delButton);
+
 
     itemList.appendChild(li);
 }
