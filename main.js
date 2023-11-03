@@ -87,9 +87,11 @@ items.insertBefore(newDiv2,firstItem) */
 
 var form = document.getElementById('addForm')
 var itemList = document.getElementById('items')
+var filter = document.getElementById('filter');
 
 form.addEventListener('submit',addItem);
 itemList.addEventListener('click',removeItem);
+filter.addEventListener('keyup',filterItems);
 
 //add item
 function addItem(e)
@@ -98,11 +100,15 @@ function addItem(e)
 
     //get input value
     var newItem = document.getElementById('item').value;
-
+    var newDesc = document.getElementById('description').value;
     //create new element
     var li = document.createElement('li')
     li.className = 'list-group-item';
+    
     li.appendChild(document.createTextNode(newItem));
+
+   // li.appendChild(document.createTextNode(" "));
+    li.appendChild(document.createTextNode(" "+newDesc));
     //create button
     var editBtn = document.createElement('button')
 editBtn.className = 'btn btn-danger btn-sm float-right';
@@ -128,4 +134,33 @@ function removeItem(e)
             itemList.removeChild(li);
         }
     }
+}
+
+//filter items
+function filterItems(e)
+{
+    //convert text to lowercase
+var text = e.target.value.toLowerCase();
+
+//get list of items
+var items = itemList.getElementsByTagName('li');
+
+//convert into array bcoz items will give html collection
+//and we want just names of items
+
+Array.from(items).forEach(function(item){
+    
+    var itemName = item.firstChild.textContent;
+    var itemDescription = item.childNodes[1].textContent;
+ //   console.log(itemDescription);
+    if(itemName.toLowerCase().indexOf(text) != -1 || itemDescription.toLowerCase().indexOf(text) != -1 )
+    {
+        item.style.display='block';
+    }
+    else
+    {
+        
+        item.style.display='none';
+    }
+});
 }
