@@ -85,7 +85,7 @@ var firstItem=  document.querySelector('div li')
 
 items.insertBefore(newDiv2,firstItem) */
 
-var form = document.getElementById('addForm')
+/* var form = document.getElementById('addForm')
 var itemList = document.getElementById('items')
 var filter = document.getElementById('filter');
 
@@ -163,4 +163,20 @@ Array.from(items).forEach(function(item){
         item.style.display='none';
     }
 });
+} */
+
+// CODE FOR LOCAL STORAGE OF USER DETAILS
+
+var addForm = document.getElementById("addUser");
+addForm.addEventListener('submit',addUser);
+
+function addUser(e)
+{
+  //  e.preventDefault();
+
+    var userName = document.getElementById("username").value;
+    var age = document.getElementById("age").value;
+
+    localStorage.setItem(userName,age);
+  
 }
