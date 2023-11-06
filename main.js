@@ -172,22 +172,26 @@ addForm.addEventListener('submit',addUser);
 
 function addUser(e)
 {
-  //  e.preventDefault();
+   e.preventDefault();
 
     var userName = document.getElementById("username").value;
+    var email = document.getElementById("email").value;
     var age = document.getElementById("age").value;
+    var details = document.getElementById("details")
 
+    details.appendChild(document.createTextNode(email+"-"+userName+"-"+age+","))
    // localStorage.setItem(userName,age);
 
    //STORING OBJECTS
 
    var myObj ={
     name:userName,
-    age:age
+    age:age,
+    email:email
    };
    var myObj_serialized = JSON.stringify(myObj);
 
-   localStorage.setItem("myObj",myObj_serialized);
+   localStorage.setItem(email,myObj_serialized);
 
    var myobj_deserialized = JSON.parse(localStorage.getItem("myObj"));
    console.log(myobj_deserialized)
