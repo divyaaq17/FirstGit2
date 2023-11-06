@@ -177,6 +177,19 @@ function addUser(e)
     var userName = document.getElementById("username").value;
     var age = document.getElementById("age").value;
 
-    localStorage.setItem(userName,age);
+   // localStorage.setItem(userName,age);
+
+   //STORING OBJECTS
+
+   var myObj ={
+    name:userName,
+    age:age
+   };
+   var myObj_serialized = JSON.stringify(myObj);
+
+   localStorage.setItem("myObj",myObj_serialized);
+
+   var myobj_deserialized = JSON.parse(localStorage.getItem("myObj"));
+   console.log(myobj_deserialized)
   
 }
