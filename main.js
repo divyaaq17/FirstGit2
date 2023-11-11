@@ -169,17 +169,29 @@ Array.from(items).forEach(function(item){
 
 var addForm = document.getElementById("addUser");
 addForm.addEventListener('submit',addUser);
+var details = document.getElementById("details")
 
 function addUser(e)
 {
    e.preventDefault();
+ 
+   var li = document.createElement('li')
 
     var userName = document.getElementById("username").value;
     var email = document.getElementById("email").value;
     var age = document.getElementById("age").value;
-    var details = document.getElementById("details")
 
-    details.appendChild(document.createTextNode(email+"-"+userName+"-"+age+","))
+    var delbtn = document.createElement('button');
+    delbtn.appendChild(document.createTextNode('Delete'));
+    delbtn.addEventListener('click',removeUser)
+
+    li.appendChild(document.createTextNode(userName+"-"));
+    li.appendChild(document.createTextNode(email));
+    li.appendChild(document.createTextNode(""));
+    li.appendChild(document.createTextNode(age));
+    li.appendChild(delbtn);
+    details.appendChild(li);
+   // details.appendChild(document.createTextNode(email+"-"+userName+"-"+age+" "+delbtn +"br"))
    // localStorage.setItem(userName,age);
 
    //STORING OBJECTS
@@ -196,4 +208,14 @@ function addUser(e)
    var myobj_deserialized = JSON.parse(localStorage.getItem("myObj"));
    console.log(myobj_deserialized)
   
+}
+function removeUser(e)
+{
+    var li = e.target.parentElement;
+    details.removeChild(li);
+    var email = li.childNodes[1].textContent;
+// Array.from(li).forEach(function(i){
+//    email= i.childNodes[1].textContent;
+// })
+   localStorage.removeItem(email);
 }
