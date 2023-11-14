@@ -185,11 +185,18 @@ function addUser(e)
     delbtn.appendChild(document.createTextNode('Delete'));
     delbtn.addEventListener('click',removeUser)
 
-    li.appendChild(document.createTextNode(userName+"-"));
+    var editBtn = document.createElement('button');
+    editBtn.appendChild(document.createTextNode("Edit"));
+    editBtn.addEventListener('click',editUser);
+
+    li.appendChild(document.createTextNode(userName));
+    li.appendChild(document.createTextNode(" "));
     li.appendChild(document.createTextNode(email));
-    li.appendChild(document.createTextNode(""));
+    li.appendChild(document.createTextNode(" "));
     li.appendChild(document.createTextNode(age));
+    li.appendChild(document.createTextNode(" "));
     li.appendChild(delbtn);
+    li.appendChild(editBtn)
     details.appendChild(li);
    // details.appendChild(document.createTextNode(email+"-"+userName+"-"+age+" "+delbtn +"br"))
    // localStorage.setItem(userName,age);
@@ -209,11 +216,24 @@ function addUser(e)
    console.log(myobj_deserialized)
   
 }
+function editUser(e)
+{
+    var li = e.target.parentElement;
+    
+
+    var email =li.childNodes[2].textContent;
+    document.getElementById("email").value =email
+    document.getElementById("username").value =li.childNodes[0].textContent;
+    document.getElementById("age").value =li.childNodes[4].textContent;
+    
+    details.removeChild(li);
+    localStorage.removeItem(email);
+}
 function removeUser(e)
 {
     var li = e.target.parentElement;
     details.removeChild(li);
-    var email = li.childNodes[1].textContent;
+    var email = li.childNodes[2].textContent;
 // Array.from(li).forEach(function(i){
 //    email= i.childNodes[1].textContent;
 // })
