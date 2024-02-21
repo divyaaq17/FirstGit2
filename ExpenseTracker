@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Expense Tracker</title>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+<style>
+   .container
+    {width:100%;padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}
+    .form-group{margin-bottom:1rem}
+    .btn{display:inline-block;font-weight:400;color:#212529;text-align:center;}
+    .table{width:100%;margin-bottom:1rem;color:#212529}
+    .table td,.table th{padding:.75rem;vertical-align:top;border-top:1px solid #dee2e6}
+    .table thead th{vertical-align:bottom;border-bottom:2px solid #dee2e6}
+</style>
+ <body onload="showExpenses()">
+    <div class="container">
+     <div>
+      <div>
+       <h1>Expense Tracker</h1>
+       <form onsubmit="return addExpense()">
+        <input type="hidden" id="editIndex">
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" required>
+           </div>
+        <div class="form-group">
+         <label for="category">Category:</label>
+         <select id="category" name="category" required>
+            <option value="default">Select</option>
+            <option value="Movie">Movie</option>
+            <option value="Grocery">Grocery</option>
+            <option value="Commute">Commute</option>
+            <option value="Salon">Salon</option>
+          </select>
+        
+        </div>
+        
+        <div class="form-group">
+            <label for="date">Description:</label>
+            <input type="text" id="desc" required>
+           </div>
+        <button type="submit" id="addButton" class="btn">Add Expense</button>
+       </form>
+       <br>
+       <table class="table table-striped table-bordered" id="expenseTable">
+        <thead>
+         <tr>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Description</th>
+          <th>Actions</th>
+         </tr>
+        </thead>
+        <tbody></tbody>
+       </table>
+      </div>
+     </div>
+    </div>
+
+    <script>
+        // add expense to table and local storage
+        function addExpense() {
+         var desc = document.getElementById('desc').value;
+         var category = document.getElementById('category').value;
+         var amount = document.getElementById('amount').value;
+         var editIndex = document.getElementById('editIndex').value;
+      
+         if (editIndex === '') {
+          var expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+          expenses.push({amount: amount,category: category, desc: desc});
+          localStorage.setItem('expenses', JSON.stringify(expenses));
+          var tableBody = document.getElementById('expenseTable').getElementsByTagName('tbody')[0];
+          var row = '<tr><td>' + amount + '</td><td>' + category + '</td><td>' + desc + '</td><td><button type="button" class="btn btn-sm btn-primary" onclick="editForm(this.parentNode.parentNode)">Edit</button> <button type="button" class="btn btn-sm btn-danger" onclick="deleteExpense(this.parentNode.parentNode)">Delete</button></td></tr>';
+          tableBody.insertAdjacentHTML('beforeend', row);
+         } else {
+          editExpense(editIndex, desc, category, amount);
+         }
+      
+         resetForm();
+         return false;
+        }
+
+        // reset the form
+  function resetForm() {
+   document.getElementById('desc').value = '';
+   document.getElementById('category').value = '';
+   document.getElementById('amount').value = '';
+   document.getElementById('editIndex').value = '';
+   document.getElementById('addButton').innerHTML = 'Add Expense';
+  }
+   // delete expense from table and local storage
+   function deleteExpense(row) {
+     row.parentNode.removeChild(row);
+     var expenses = JSON.parse(localStorage.getItem('expenses'))
+     var rowIndex = row.rowIndex - 1;
+     expenses.splice(rowIndex, 1);
+     localStorage.setItem('expenses', JSON.stringify(expenses));
+     }
+
+     // edit expense in form
+ function editForm(row) {
+    var rowIndex = row.rowIndex - 1;
+    var expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+    var expense = expenses[rowIndex];
+    document.getElementById('desc').value = expense.desc;
+    document.getElementById('category').value = expense.category;
+    document.getElementById('amount').value = expense.amount;
+    document.getElementById('editIndex').value = rowIndex;
+    document.getElementById('addButton').innerHTML = 'Update Expense';
+   }
+
+   function editExpense(index, desc, category, amount) {
+    var expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+    expenses[index] = {amount: amount, category: category, desc: desc};
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+    var tableRow = document.getElementById('expenseTable').rows[index+1];
+    tableRow.cells[2].innerHTML = desc;
+    tableRow.cells[1].innerHTML = category;
+    tableRow.cells[0].innerHTML = amount;
+    resetForm();
+   }
+   function showExpenses() {
+  var expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+  var tableBody = document.getElementById('expenseTable').getElementsByTagName('tbody')[0];
+  for (var i = 0; i < expenses.length; i++) {
+   var expense = expenses[i];
+   var row = '<tr><td>' + expense.amount + '</td><td>' + expense.category + '</td><td>' + expense.desc + '</td><td><button type="button" class="btn btn-sm btn-primary" onclick="editForm(this.parentNode.parentNode)">Edit</button> <button type="button" class="btn btn-sm btn-danger" onclick="deleteExpense(this.parentNode.parentNode)">Delete</button></td></tr>';
+   tableBody.insertAdjacentHTML('beforeend', row);
+  }
+ }
+
+</script>
+</body>
+</html>
